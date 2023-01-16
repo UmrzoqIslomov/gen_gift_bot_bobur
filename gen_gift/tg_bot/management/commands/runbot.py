@@ -13,6 +13,6 @@ class Command(BaseCommand):
         updater.dispatcher.add_handler(CommandHandler('start', start))
         updater.dispatcher.add_handler(MessageHandler(Filters.text, message_handler))
         updater.dispatcher.add_handler(MessageHandler(Filters.contact, contact_handler))
-        # updater.dispatcher.add_handler(CallbackQueryHandler(callback_handler))
+        updater.dispatcher.add_handler(CallbackQueryHandler(callback_handler))
         updater.start_polling()
         updater.idle()

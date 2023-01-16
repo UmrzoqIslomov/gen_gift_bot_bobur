@@ -79,6 +79,7 @@ class Product(models.Model):
     description_uz = models.TextField(null=True, blank=True)
     description_ru = models.TextField(null=True, blank=True)
     age = models.ManyToManyField(Agee)
+    price = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name_uz}"

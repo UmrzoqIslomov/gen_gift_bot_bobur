@@ -1,6 +1,6 @@
 from tg_bot.Globals import TEXTS
 from tg_bot.models import *
-from telegram import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=None, cash=None, human=None, lang=1):
@@ -151,18 +151,6 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
 def inline_btn(type, page=1, ctg_id=0, data=None, nta=1, user_id=0):
     btn = []
-    if type == "prod":
-        if not data:
-            return []
-        print(page)
-        for i in range(page - 1, page):
-            print(i)
-            btn.append([
-                InlineKeyboardButton("🔙 Ortga", callback_data=f"prev_{page}_{ctg_id}"),
-                InlineKeyboardButton(f"{page}/{len(data)}", callback_data=f"pass"),
-                InlineKeyboardButton("Keyingi 🔜", callback_data=f"next_{page}_{ctg_id}"),
-            ])
-
     if type == "savat":
         btn.append([
             InlineKeyboardButton("◀️Orqaga", callback_data="◀️Orqaga"),
@@ -183,11 +171,11 @@ def inline_btn(type, page=1, ctg_id=0, data=None, nta=1, user_id=0):
             InlineKeyboardButton("🧹 Savatni tozalash", callback_data="🧹 Savatni tozalash")
         ])
     if type == "prod":
-        btn.append([
-            InlineKeyboardButton("-", callback_data="-"),
-            InlineKeyboardButton(f"{nta}", callback_data=f"{nta}"),
-            InlineKeyboardButton("+", callback_data="+"),
-        ])
+        # btn.append([
+        #     InlineKeyboardButton("-", callback_data="-"),
+        #     InlineKeyboardButton(f"{nta}", callback_data=f"{nta}"),
+        #     InlineKeyboardButton("+", callback_data="+"),
+        # ])
         btn.append([
             InlineKeyboardButton("📥 Savatga qo'shish", callback_data="savat"),
         ])

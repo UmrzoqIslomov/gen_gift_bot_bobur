@@ -88,6 +88,24 @@ def message_handler(update, context, ):
     elif log['state'] == 2:
         update.message.reply_text(TEXTS['CONTACT2'][tg_user.lang])
         print(msg)
+
+    if msg == TEXTS['Settings'][1] or msg == TEXTS['Settings'][2]:
+        log['state'] = 40
+        log['til'] = msg
+        update.message.reply_text(TEXTS["LANG"][tg_user.lang], reply_markup=btns("lang", lang=tg_user.lang))
+    elif msg == "🇺🇿Uz":
+        log['state'] = 41
+        tg_user.lang = 1
+        tg_user.save()
+        # update.message.reply_text("Til o'zgartirldi")
+        update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
+    elif msg == "🇷🇺Ru":
+        log['state'] = 42
+        tg_user.lang = 2
+        tg_user.save()
+        # update.message.reply_text("Til o'zgartirldi")
+        update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
+
     # if msg == TEXTS['Back'][1] or msg == TEXTS['Back'][2]:
     #     if log['state'] == 17:
     #         log['state'] = 16
@@ -276,23 +294,24 @@ def message_handler(update, context, ):
         log['state'] = 17
         log['product'] = msg
         print("kirdi")
-        log["nta"] = 1
+        # log["nta"] = 1
         l = "uz" if tg_user.lang == 1 else "ru"
         d = {
             f"name_{l}": msg
         }
         product = Product.objects.filter(**d).first()
+        log['price'] = product.price
         update.message.reply_text(TEXTS['Gift'][tg_user.lang], reply_markup=btns("prod"))
 
         print(product)
-        Name = f"Name: {getattr(product, f'name_{l}')}\n" if getattr(product, f'name_{l}') else ""
-        Description = f"Description: {getattr(product, f'description_{l}')}\n" if getattr(product,
-                                                                                          f'description_{l}') else ""
+        Name = f"{getattr(product, f'name_{l}')}\n" if getattr(product, f'name_{l}') else ""
+        Price = f"{product.price}"
+        Description = f"{getattr(product, f'description_{l}')}\n" if getattr(product, f'description_{l}') else ""
         context.bot.send_photo(
             photo=open(f'{product.img.path}', 'rb'),
-            caption=f"{Name}{Description}",
+            caption=f"{Name}{Description}{Price}",
             chat_id=user.id,
-            # reply_markup=inline_btn('prod', nta=log['nta']),
+            reply_markup=inline_btn('prod'),
         )
 
     tglog.messages = log
@@ -317,5 +336,71 @@ def contact_handler(update, context):
         log['state'] = 10
         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
         print('number')
+    tglog.messages = log
+    tglog.save()
+
+
+def callback_handler(update, context, kwargs=None):
+    query = update.callback_query
+    data = query.data
+    user = query.from_user
+    tglog = Log.objects.filter(user_id=user.id).first()
+    tg_user = User.objects.filter(user_id=user.id).first()
+    log = tglog.messages
+
+    print(data)
+    if data == "savat":
+        savat = Savat.objects.filter(product=log['product'], user_id=user.id).first()
+        if savat:
+            # savat.amount = savat.amount + log['nta']
+            savat.summ = int(log['price'].strip("so'm").replace(" ", "")) * savat.amount
+            savat.save()
+        else:
+            savat = Savat()
+            # savat.amount = log['nta']
+            savat.product = log['product']
+            savat.priceproduct = log['price']
+            savat.user_id = user.id
+            print(log)
+            # savat.summ = (log['price'])
+            savat.save()
+        update.callback_query.answer(f"savatga qo'shildi")
+        query.message.delete()
+
+    if log['state'] == 30:
+        if data == "🧹 Savatni tozalash":
+            Savat.objects.filter(user_id=user.id).delete()
+            update.callback_query.answer("Savat tozalandi")
+            query.message.delete()
+        elif data == "⏰ Yetkazib berish vaqti":
+            query.message.reply_text(
+                "Sizning buyurtmangiz kun davomida yetkazib beriladi aloqada bo'ling kuryermiz siz bilan tez orada bog'landa 😊")
+            query.message.delete()
+        elif data == "🚕 Buyurtma berish":
+            query.message.reply_text(
+                f"{user.username} sizning buyurtmangiz qabul qilindi. Qisqa vaqt ichida kuryerimz siz bilan bog'lanadi 😊")
+            query.message.delete()
+        elif data == "◀️Orqaga":
+            log['state'] = 10
+            query.message.reply_text("Bosh menulardan birini tanlang!", reply_markup=btns('menu'))
+            query.message.delete()
+        else:
+            Savat.objects.filter(slug=data, user_id=user.id).delete()
+            update.callback_query.answer("Savat tozalandi")
+            query.message.delete()
+            log['state'] = 30
+            savat = Savat.objects.filter(user_id=user.id)
+            s = "Savatda:\n"
+            summa = 0
+            for i in savat:
+                s += f"{i.amount} ✅ {i.product} {i.summ} \n"
+                summa += i.summ
+            if summa == 0:
+                query.message.reply_text("Savatingiz bo'sh")
+            else:
+                s += f"Maxsulotlar: {summa} so'm\nYetkazip berish: Shahar ichida bepul"
+
+                query.message.reply_text(s, reply_markup=inline_btn("savat", user_id=user.id))
+
     tglog.messages = log
     tglog.save()
