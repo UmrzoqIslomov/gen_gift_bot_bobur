@@ -1,14 +1,14 @@
 TEXTS = {
-    "START": "Assalomu Alaykum Podarka botiga xush kelibsiz.🙌\nTilni tanlang👇\n\n"
-             "Здравствуйте добро пожаловать в мебельный бот DAFNA.🙌 Выберите язык👇",
+    "START": "Assalomu Alaykum @bobur_xd botiga xush kelibsiz.🙌\nTilni tanlang👇\n\n"
+             "Здравствуйте добро пожаловать в бот @bobur_xd.🙌 Выберите язык👇",
 
     "NAME": {
         1: 'Ismingizni kiriting 🖊',
         2: 'Введите имя 🖊'
     },
     "CONTACT": {
-        1: "Biz siz bilan bog'lanishimiz uchun\n'Raqamni yuborish 📲' tugmasini bosgan holda raqamingizni yuboring",
-        2: "Отправьте нам свой номер, нажав кнопку «Отправить номер 📲», чтобы мы могли связаться с вами."
+        1: "'Raqamni yuborish 📲' tugmasini bosgan holda raqamingizni yuboring",
+        2: "Отправьте нам свой номер, нажав кнопку «Отправить номер 📲»."
     },
     'ERROR1': {
         1:  'Iltimos ismingizni text formatida kiriting. !!!',
@@ -63,8 +63,8 @@ TEXTS = {
         2: "Выберите одно из подарков",
     },
     "Back": {
-        1: "🔙 Bosh menu",
-        2: "🔙 Главное меню"
+        1: "🔙 Orqaga",
+        2: "🔙 Назад"
     },
     "ERROR": {
         1: "Bu bo'limgaga oid hech qanday bo'lim topilmadi  ❗️",
@@ -73,5 +73,9 @@ TEXTS = {
     "LANG": {
         1: "Tilni tanlang !!!",
         2: "Выберите язык !!!"
+    },
+    "SET": {
+        1: "Til o'zgartirldi",
+        2: "Язык изменен"
     }
 }

@@ -98,9 +98,13 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
     elif type == "age":
         btn = []
-        print("age")
+
+        cash = Cash.objects.filter(name_ru=cash).first()
+        if not cash:
+            return ReplyKeyboardMarkup([], resize_keyboard=True)
+        print("age1234567")
         age = Agee.objects.filter(cash=cash)
-        print("age", age)
+        print("age2345678", age)
         if not age:
             return ReplyKeyboardMarkup([], resize_keyboard=True)
         for i in range(1, len(age), 2):
