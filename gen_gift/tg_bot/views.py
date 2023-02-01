@@ -108,43 +108,88 @@ def message_handler(update, context, ):
 
     if msg == TEXTS['Back'][1] or msg == TEXTS['Back'][2]:
         if log['state'] == 17:
-            log['cash'] = msg
+            log['state'] = 16
             l = "uz" if tg_user.lang == 1 else "ru"
             d = {
-                f"name_{l}": msg
+                f"name_{l}": log['cash']
             }
-            cash = Cash.objects.get(**d)
+            print("d>>>>>>>>>>", d)
+            cash = Cash.objects.filter(**d).first()
             if not cash:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('age', cash=log.get('cash'))
+            markup = btns('age', cash=cash)
             print(markup)
-            log['state'] = 16
-            update.message.reply_text(TEXTS['Year'][tg_user.lang], reply_markup=btns(markup, lang=tg_user.lang))
+            update.message.reply_text(TEXTS['Year'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
             tglog.save()
             return 0
+
         elif log['state'] == 16:
             log['state'] = 15
-            update.message.reply_text(TEXTS['Pul'][tg_user.lang], reply_markup=btns('cash', lang=tg_user.lang))
+            l = "uz" if tg_user.lang == 1 else "ru"
+            d = {
+                f"name_{l}": log['interests']
+            }
+            print("d>>>>>>>>>>", d)
+            interests = Interests.objects.filter(**d).first()
+            if not interests:
+                update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
+                return 0
+            markup = btns('cash', interests=log.get('interests'))
+            print(markup)
+            update.message.reply_text(TEXTS['Pul'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
             tglog.save()
             return 0
         elif log['state'] == 15:
             log['state'] = 14
-            update.message.reply_text(TEXTS['Interest'][tg_user.lang], reply_markup=btns('interests', lang=tg_user.lang))
+            l = "uz" if tg_user.lang == 1 else "ru"
+            d = {
+                f"name_{l}": log['situation']
+            }
+            print("d>>>>>>>>>>", d)
+            situation = Situation.objects.filter(**d).first()
+            if not situation:
+                update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
+                return 0
+            markup = btns('interests', situation=log.get('situation'))
+            print(markup)
+            update.message.reply_text(TEXTS['Interest'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
             tglog.save()
             return 0
         elif log['state'] == 14:
             log['state'] = 13
-            update.message.reply_text(TEXTS['Holat'][tg_user.lang], reply_markup=btns('situation', lang=tg_user.lang))
+            l = "uz" if tg_user.lang == 1 else "ru"
+            d = {
+                f"name_{l}": log['human']
+            }
+            print("d>>>>>>>>>>", d)
+            human = Human.objects.filter(**d).first()
+            if not human:
+                update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
+                return 0
+            markup = btns('situation', human=log.get('human'))
+            print(markup)
+            update.message.reply_text(TEXTS['Holat'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
             tglog.save()
             return 0
         elif log['state'] == 13:
             log['state'] = 12
-            update.message.reply_text(TEXTS['Human'][tg_user.lang], reply_markup=btns('human', lang=tg_user.lang))
+            l = "uz" if tg_user.lang == 1 else "ru"
+            d = {
+                f"name_{l}": log['ctg']
+            }
+            print("d>>>>>>>>>>", d)
+            ctg = Category.objects.filter(**d).first()
+            if not ctg:
+                update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
+                return 0
+            markup = btns('human', ctg=log.get('ctg'))
+            print(markup)
+            update.message.reply_text(TEXTS['Human'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
             tglog.save()
             return 0
@@ -161,50 +206,6 @@ def message_handler(update, context, ):
             tglog.save()
             return 0
 
-    # if msg == TEXTS['Back'][1] or msg == TEXTS['Back'][2]:
-    #     if log['state'] == 17:
-    #         log['state'] = 16
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 16:
-    #         log['state'] = 15
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 15:
-    #         log['state'] = 14
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 14:
-    #         log['state'] = 13
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 13:
-    #         log['state'] = 12
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 12:
-    #         log['state'] = 11
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-    #     elif log['state'] == 11:
-    #         log['state'] = 10
-    #         update.message.reply_text(TEXTS['MENU1'][tg_user.lang], reply_markup=btns('menu', lang=tg_user.lang))
-    #         tglog.messages = log
-    #         tglog.save()
-    #         return 0
-
     if msg == TEXTS['SOVGA'][1] or msg == TEXTS['SOVGA'][2]:
         log['state'] = 11
         update.message.reply_text(TEXTS['SOVGA'][tg_user.lang], reply_markup=btns("ctg", lang=tg_user.lang))
@@ -217,13 +218,13 @@ def message_handler(update, context, ):
         d = {
             f"name_{l}": msg
         }
-        print("human ciqti")
+        print(d, log, )
         ctg = Category.objects.filter(**d).first()
         if not ctg:
             update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
             return 0
         update.message.reply_text(TEXTS['Human'][tg_user.lang], reply_markup=btns('human', ctg=ctg, lang=tg_user.lang))
-
+        print("human ciqti")
     elif log['state'] == 12:
         log['state'] = 13
         log['human'] = msg
@@ -268,8 +269,9 @@ def message_handler(update, context, ):
         if not interests:
             update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
             return 0
-        update.message.reply_text(TEXTS['Pul'][tg_user.lang],
-                                  reply_markup=btns('cash', interests=interests, lang=tg_user.lang))
+        rm = btns('cash', interests=interests, lang=tg_user.lang)
+        print("btns>>>>>>>>>>>>", rm)
+        update.message.reply_text(TEXTS['Pul'][tg_user.lang], reply_markup=rm)
         print("cash buttoni ciqti")
 
     elif log['state'] == 15:

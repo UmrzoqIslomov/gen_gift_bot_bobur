@@ -7,8 +7,7 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
     btn = []
     if type == "menu":
         btn = [
-            [KeyboardButton(TEXTS['SOVGA'][lang]), KeyboardButton(TEXTS["Katalog 🛍"][lang])],
-            [KeyboardButton(TEXTS['Settings'][lang])]
+            [KeyboardButton(TEXTS['SOVGA'][lang]), KeyboardButton(TEXTS["Settings"][lang])],
         ]
     elif type == "contact":
         btn = [
@@ -31,6 +30,7 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
     elif type == "human":
         btn = []
+
         human = Human.objects.filter(ctg=ctg)
         if not human:
             return ReplyKeyboardMarkup([], resize_keyboard=True)
@@ -80,9 +80,8 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
     elif type == "cash":
         btn = []
-        print("cash")
+
         cash = Cash.objects.filter(interests=interests)
-        print("cash", cash)
         if not cash:
             return ReplyKeyboardMarkup([], resize_keyboard=True)
         for i in range(1, len(cash), 2):
@@ -98,13 +97,7 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
     elif type == "age":
         btn = []
-
-        cash = Cash.objects.filter(name_ru=cash).first()
-        if not cash:
-            return ReplyKeyboardMarkup([], resize_keyboard=True)
-        print("age1234567")
         age = Agee.objects.filter(cash=cash)
-        print("age2345678", age)
         if not age:
             return ReplyKeyboardMarkup([], resize_keyboard=True)
         for i in range(1, len(age), 2):
