@@ -80,7 +80,6 @@ def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=
 
     elif type == "cash":
         btn = []
-
         cash = Cash.objects.filter(interests=interests)
         if not cash:
             return ReplyKeyboardMarkup([], resize_keyboard=True)
