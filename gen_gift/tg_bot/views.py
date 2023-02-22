@@ -118,7 +118,7 @@ def message_handler(update, context, ):
             if not cash:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('age', cash=cash)
+            markup = btns('age', cash=cash, lang=tg_user.lang)
             print(markup)
             update.message.reply_text(TEXTS['Year'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
@@ -136,7 +136,7 @@ def message_handler(update, context, ):
             if not interests:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('cash', interests=log.get('interests'))
+            markup = btns('cash', interests=interests, lang=tg_user.lang)
             print(markup)
             update.message.reply_text(TEXTS['Pul'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
@@ -153,7 +153,7 @@ def message_handler(update, context, ):
             if not situation:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('interests', situation=log.get('situation'))
+            markup = btns('interests', situation=situation, lang=tg_user.lang)
             print(markup)
             update.message.reply_text(TEXTS['Interest'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
@@ -170,7 +170,7 @@ def message_handler(update, context, ):
             if not human:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('situation', human=log.get('human'))
+            markup = btns('situation', human=human, lang=tg_user.lang)
             print(markup)
             update.message.reply_text(TEXTS['Holat'][tg_user.lang], reply_markup=markup)
             tglog.messages = log
@@ -187,7 +187,7 @@ def message_handler(update, context, ):
             if not ctg:
                 update.message.reply_text(TEXTS['ERROR'][tg_user.lang])
                 return 0
-            markup = btns('human', ctg=log.get('ctg'))
+            markup = btns('human', ctg=ctg, lang=tg_user.lang)
             print(markup)
             update.message.reply_text(TEXTS['Human'][tg_user.lang], reply_markup=markup)
             tglog.messages = log

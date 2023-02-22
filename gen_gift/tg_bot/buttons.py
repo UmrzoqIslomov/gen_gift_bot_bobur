@@ -3,7 +3,7 @@ from tg_bot.models import *
 from telegram import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 
-def btns(type=None, ctg=None, age=None, situation=None, situate=None, interests=None, cash=None, human=None, lang=1):
+def btns(type=None, ctg=None, age=None, situation=None, interests=None, cash=None, human=None, lang=1):
     btn = []
     if type == "menu":
         btn = [
